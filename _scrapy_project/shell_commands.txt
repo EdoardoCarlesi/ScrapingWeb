@@ -1,0 +1,6 @@
+ESEMPI
+
+scrapy shell URL
+
+Prendi tutti i path delle immagini:
+request.css('img').xpath('@src').getall()
