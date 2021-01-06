@@ -14,6 +14,7 @@ def scrape_titles_and_prices(source=None, page_num=None, remote=True):
     """ Given a page source (ABUgames format!) we extract the card names and all the possible prices """
 
     # Basic paths and urls
+    #base_path = 'output/abugames_mox.'
     base_path = 'output/abugames.'
     tmp_out = base_path + str(page_num) + '.html'
 
@@ -46,36 +47,97 @@ def scrape_titles_and_prices(source=None, page_num=None, remote=True):
         # Once we have the page let's find all the card names
         scrape_title = [i.text.replace('\n', '').replace('  ','') for i in soup.find_all("div", {"class":"col-md-3 display-title"})]
         scrape_price = [i.text.replace('\n', '').replace(' ', '').replace('$', '').replace('0.00', '').replace('/','').replace('\\xa0', '')
-                .replace('NM', '').replace('Trade', '').replace('HP', '').replace('PLD', '').replace('(','').replace(')', '')
+                .replace('Trade', '').replace('(','').replace(')', '').replace(',', '')
+                #.replace('NM', '').replace('HP', '').replace('PLD', '')
                 for i in soup.find_all("span", {"class":"ng-star-inserted"})]
 
         clean_prices = []
-        print(scrape_price)
-
         for price in scrape_price:
-            
             if price == '':
                 pass
             else:
-                price = float(price)
                 clean_prices.append(price)
 
-        print(clean_prices)
+        # Initialize some variables used to store the elements into arrays
+        n_rows = len(scrape_title)
+        all_prices = np.zeros((n_rows, 9))
+        n_elements = len(clean_prices)
 
-        n_titles = len(scrape_title)
+        # Initialize some counters and other variables used in the loop over rows
+        counter = 0
+        price = clean_prices[counter]
 
-        all_prices = np.array(clean_prices)
-        all_prices = np.reshape(all_prices, (n_titles, 9))
-        df = pd.DataFrame()
+        card_types = ['MINT', 'NM', 'HP', 'PLD']
+
+        if price in card_types:
+            pass
+        else:
+            clean_prices.remove(price)
+            n_elements -= 1
+
+        price = clean_prices[counter]
+
+        #print(clean_prices)
+
+        #The table might have some missing elements, so we need to fill everything up keeping in mind that some elements will be missing
+        for i_row in range(0, n_rows): 
+
+            # Just ignore mint, it's a very rare occurrence
+            if price == 'MINT':
+                counter += 4
+                price = clean_prices[counter]
+                print(price)
+
+            if price == 'NM': 
+                counter += 1
+                all_prices[i_row, 0] = float(clean_prices[counter])
+                counter += 1
+                all_prices[i_row, 1] = float(clean_prices[counter])
+                counter += 1
+                all_prices[i_row, 2] = float(clean_prices[counter])
+                counter += 1
+         
+                # Always check that we haven't exhausted the elements in the clean_prices list
+                if counter < n_elements:
+                    price = clean_prices[counter]
+
+            if price == 'PLD': 
+                counter += 1
+                all_prices[i_row, 3] = float(clean_prices[counter])
+                counter += 1
+                all_prices[i_row, 4] = float(clean_prices[counter])
+                counter += 1
+                all_prices[i_row, 5] = float(clean_prices[counter])
+                counter += 1
+
+                if counter < n_elements:
+                    price = clean_prices[counter]
+
+            if price == 'HP': 
+                counter += 1
+                all_prices[i_row, 6] = float(clean_prices[counter])
+                counter += 1
+                all_prices[i_row, 7] = float(clean_prices[counter])
+                counter += 1
+                all_prices[i_row, 8] = float(clean_prices[counter])
+                counter += 1
+            
+                if counter < n_elements:
+                    price = clean_prices[counter]
+
+        # Initialize basic data structures
         columns = ['CardName', 'PriceNM', 'TradeNM', 'NumNM', 'PricePLD', 'TradePLD', 'NumPLD', 'PriceHP', 'TradeHP', 'NumHP']
-        df.columns_ = columns
+        df = pd.DataFrame(columns=columns)
+    
+        try: 
+            df['CardName'] = scrape_title
 
-        df['CardName'] = scrape_title
+            for i, col in enumerate(columns[1:]):
+                df[col] = all_prices[:,i]
 
-        for i, col in enumerate(columns[1:]):
-            df[col] = all_prices[:, i]
+        except ValueError:
+            print(f'Error on page {page_num}, data table has likely an irregular format.')
 
-        #print(df.head())
         return df
 
 
@@ -121,21 +183,44 @@ def extract_cardmarket():
 if __name__ == '__main__':
     """ Main wrapper """
     
+    # Should we open the browser and show it or run it in the background
     show_browser = False
-    remote = True
-    url = 'https://abugames.com/buylist?fbclid=IwAR3gw3BG40HBl6LLSIksEhyyqYXW6q511u6LQ9Pt2J63yWBJaOHMyjfe-k4'
 
+    # Should we use remote URL (on the internet) or local data previously downloaded
+    remote = False
+
+    # ABUgames main url
+    url = 'https://abugames.com/buylist?fbclid=IwAR3gw3BG40HBl6LLSIksEhyyqYXW6q511u6LQ9Pt2J63yWBJaOHMyjfe-k4'
+    #url = 'https://abugames.com/buylist/singles?search=mox'
+
+    # Set the inital page to the final page that we want to analyze
+    i_page = 1
+    n_pages = 2
+
+    # If remote make sure we are starting from the right page, so click on it and reload the content
     if remote:
+        print('MTG Web scraper running remotely.')
+
         source, driver = get_page_source(url=url, show_browser=show_browser)
+        xpath_str = '//button[contains(text(), "' + str(i_page) + '")]'
+        driver.find_element_by_xpath(xpath_str).click() 
+        time.sleep(10)
+        source = driver.page_source
+
+    # Otherwise, just set the source to None, we will reload it with beautiful soup
     else:
+        print('MTG Web scraper running on local files.')
         source = None
 
-    n_pages = 3
-    for i in range(1, n_pages+1):
+    for i in range(i_page, n_pages+1):
 
         out_file = 'output/abugames_data_pag.' + str(i) + '.csv'
         data = scrape_titles_and_prices(source=source, page_num=i, remote=remote)
-        xpath_str = '//button[contains(text(), "' + str(i) + '")]'
+
+        # We need to click on the next page, that is, i+1
+        xpath_str = '//button[contains(text(), "' + str(i+1) + '")]'
+
+        # This is an alternative to keep in mind 
         #xpath_str = '//button[contains(text(), "NEXT")]'
 
         # Click on the page only if we did not 
@@ -148,16 +233,19 @@ if __name__ == '__main__':
 
             # Get the new page source
             source = driver.page_source
-            #source, driver = get_page_source(url=url, show_browser=show_browser, driver=driver)
         else:
-
+            print(data.head(10))
             data.to_csv(out_file)
-       
+
+    # Once we have ended looping on remote URLs we can close / quit everything 
+    if remote:
+        driver.close()
+        driver.quit()
 
 
-# WARNING TODO 
+
 '''
-    THERE MIGHT BE SOME MINT CARDS. VERY VERY RARE. but this screws up the way things are organized
+THERE MIGHT BE SOME MINT CARDS. VERY VERY RARE. but this screws up the way things are organized
 '''
 
 #print(source)

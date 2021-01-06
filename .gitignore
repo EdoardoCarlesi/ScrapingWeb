@@ -1,4 +1,5 @@
 activate
 *.swp
+*.log
 *.html
 *.csv
