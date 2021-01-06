@@ -195,7 +195,7 @@ if __name__ == '__main__':
 
     # Set the inital page to the final page that we want to analyze
     i_page = 1
-    n_pages = 2
+    n_pages = 5
 
     # If remote make sure we are starting from the right page, so click on it and reload the content
     if remote:
@@ -206,9 +206,12 @@ if __name__ == '__main__':
         driver.find_element_by_xpath(xpath_str).click() 
         time.sleep(10)
         source = driver.page_source
-
-    # Otherwise, just set the source to None, we will reload it with beautiful soup
+        
+    # If not grabbing data from remote we will dump it all to csv files, which can be merged into a single dataframe
     else:
+        full_data = pd.DataFrame()
+
+        # Just set the source to None, we will reload it with beautiful soup
         print('MTG Web scraper running on local files.')
         source = None
 
@@ -234,15 +237,28 @@ if __name__ == '__main__':
             # Get the new page source
             source = driver.page_source
         else:
+            print(f'Saving dataframe to {out_file}. File header:')
             print(data.head(10))
-            data.to_csv(out_file)
+            data.to_csv(out_file, index=False)
+
+            if i == i_page:
+                full_data = data.copy()
+                print(i)
+            else:
+                full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
+                print('*', i)
 
     # Once we have ended looping on remote URLs we can close / quit everything 
     if remote:
         driver.close()
         driver.quit()
 
-
+    # Print to a single dataframe
+    else:
+        str_num = str(i_page) + '-' + str(n_pages)
+        out_file = 'output/abugames_all_data_' + str_num + '.csv'
+        print(f'Printing full data to {out_file}')
+        full_data.to_csv(out_file, index=False)
 
 '''
 THERE MIGHT BE SOME MINT CARDS. VERY VERY RARE. but this screws up the way things are organized
