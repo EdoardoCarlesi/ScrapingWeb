@@ -1,3 +1,4 @@
 activate
-.swp
 *.swp
+*.html
+*.csv

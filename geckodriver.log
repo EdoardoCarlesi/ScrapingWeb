@@ -1,0 +1,519 @@
+1609855173613	geckodriver	INFO	Listening on 127.0.0.1:47129
+1609855173617	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilehNlqPH"
+1609855181023	Marionette	INFO	Listening on port 39529
+1609855181071	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/ExtensionCommon.jsm, line 501: TypeError: wgc is null
+JavaScript error: , line 0: uncaught exception: Object
+1609855190046	Marionette	INFO	Stopped listening on port 39529
+1609855683651	geckodriver	INFO	Listening on 127.0.0.1:35539
+1609855683656	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilexsxVby"
+1609855688098	Marionette	INFO	Listening on port 42607
+1609855688180	Marionette	WARN	TLS certificate errors will be ignored for this session
+1609855706900	Marionette	INFO	Stopped listening on port 42607
+Exiting due to channel error.
+1609855712184	geckodriver	INFO	Listening on 127.0.0.1:42007
+1609855712189	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileHwY2pr"
+1609855716502	Marionette	INFO	Listening on port 38675
+1609855716602	Marionette	WARN	TLS certificate errors will be ignored for this session
+1609855731604	Marionette	INFO	Stopped listening on port 38675
+Exiting due to channel error.
+1609856215160	geckodriver	INFO	Listening on 127.0.0.1:60131
+1609856215165	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileDeQUIC"
+1609856219546	Marionette	INFO	Listening on port 35591
+1609856219580	Marionette	WARN	TLS certificate errors will be ignored for this session
+1609856244396	Marionette	INFO	Stopped listening on port 35591
+1609884072079	geckodriver	INFO	Listening on 127.0.0.1:51703
+1609884072958	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileRza9k9"
+1609884078816	Marionette	INFO	Listening on port 36917
+1609884078885	Marionette	WARN	TLS certificate errors will be ignored for this session
+1609884101013	Marionette	INFO	Stopped listening on port 36917
+1609884105597	geckodriver	INFO	Listening on 127.0.0.1:54949
+1609884105632	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile2CWbtn"
+1609884110620	Marionette	INFO	Listening on port 45963
+1609884110647	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://sdsclub.com/wp-includes/js/jquery/jquery.min.js?ver=3.5.1, line 2: Script terminated by timeout at:
+S.fn.extend@https://sdsclub.com/wp-includes/js/jquery/jquery.min.js?ver=3.5.1:2:2288
+simulate@https://sdsclub.com/wp-includes/js/jquery/jquery.min.js?ver=3.5.1:2:71962
+i@https://sdsclub.com/wp-includes/js/jquery/jquery.min.js?ver=3.5.1:2:72305
+
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://sdsclub.com"
+console.error: "Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers."
+1609884653687	geckodriver	INFO	Listening on 127.0.0.1:33635
+1609884653691	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileoZTvMl"
+1609884658325	Marionette	INFO	Listening on port 36789
+1609884658405	Marionette	WARN	TLS certificate errors will be ignored for this session
+1609884683243	Marionette	INFO	Stopped listening on port 36789
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://sdsclub.com"
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://sdsclub.com"
+JavaScript error: https://www.udemy.com/staticx/udemy/js/webpack/entry-udlite-baseline-modern-vendor.c2819a363caff0ad139a.js, line 1: Error: Request failed with status code 403
+1609884823324	Marionette	INFO	Stopped listening on port 45963
+1609885821461	geckodriver	INFO	Listening on 127.0.0.1:45761
+1609885821466	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileUYfiKz"
+1609885826358	Marionette	INFO	Listening on port 44109
+1609885826394	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/URIFixup.jsm, line 281: NS_ERROR_FAILURE: Should pass a non-null uri
+1609885873666	geckodriver	INFO	Listening on 127.0.0.1:49831
+1609885873671	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile6GsMNn"
+1609885878483	Marionette	INFO	Listening on port 33983
+1609885878586	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609885893661	geckodriver	INFO	Listening on 127.0.0.1:47919
+1609885893666	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileD0dKkL"
+1609885898494	Marionette	INFO	Listening on port 33159
+1609885898580	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.error: "Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers."
+1609885952664	geckodriver	INFO	Listening on 127.0.0.1:40593
+1609885952669	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofiledW3XlC"
+1609885957383	Marionette	INFO	Listening on port 35569
+1609885957483	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.error: "Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers."
+1609886553135	geckodriver	INFO	Listening on 127.0.0.1:59589
+1609886553140	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileAOjMTb"
+1609886557623	Marionette	INFO	Listening on port 34741
+1609886557663	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609886594219	Marionette	INFO	Stopped listening on port 34741
+1609886596979	Marionette	INFO	Stopped listening on port 35569
+1609886599835	Marionette	INFO	Stopped listening on port 33159
+1609886602542	Marionette	INFO	Stopped listening on port 33983
+1609886604826	Marionette	INFO	Stopped listening on port 44109
+1609886687147	geckodriver	INFO	Listening on 127.0.0.1:40393
+1609886687151	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilem64Kds"
+1609886691460	Marionette	INFO	Listening on port 37237
+1609886691484	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/URIFixup.jsm, line 281: NS_ERROR_FAILURE: Should pass a non-null uri
+1609886714710	Marionette	INFO	Stopped listening on port 37237
+1609886837926	geckodriver	INFO	Listening on 127.0.0.1:53025
+1609886837931	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilerc8CrS"
+1609886842339	Marionette	INFO	Listening on port 46819
+1609886842373	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.error: "Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers."
+1609886945843	geckodriver	INFO	Listening on 127.0.0.1:57097
+1609886945848	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileA9Tq5E"
+1609886950110	Marionette	INFO	Listening on port 34695
+1609886950170	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609886963650	Marionette	INFO	Stopped listening on port 34695
+1609887189705	geckodriver	INFO	Listening on 127.0.0.1:43383
+1609887189710	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilecMijYJ"
+1609887194362	Marionette	INFO	Listening on port 44211
+1609887194424	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.error: "Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers."
+1609887327042	geckodriver	INFO	Listening on 127.0.0.1:35413
+1609887327047	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilezlZmDr"
+1609887331590	Marionette	INFO	Listening on port 39855
+1609887331660	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.error: (new TypeError("parent is null", "resource://devtools/client/inspector/shared/style-change-tracker.js", 67))
+TypeError: parent is null: canMutationImpactCurrentStyles@resource://devtools/client/inspector/shared/style-change-tracker.js:67:24
+onMutations@resource://devtools/client/inspector/shared/style-change-tracker.js:84:41
+_emit@resource://devtools/shared/event-emitter.js:226:34
+emit@resource://devtools/shared/event-emitter.js:172:18
+emit@resource://devtools/shared/event-emitter.js:324:18
+getMutations@resource://devtools/client/fronts/walker.js:409:10
+
+console.error: (new TypeError("container.node.targetFront is null", "resource://devtools/client/inspector/markup/markup.js", 2245))
+console.error: (new TypeError("container.node.targetFront is null", "resource://devtools/client/inspector/markup/markup.js", 2245))
+1609887548700	geckodriver	INFO	Listening on 127.0.0.1:51711
+1609887548704	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileQcHJYm"
+1609887553170	Marionette	INFO	Listening on port 44821
+1609887553218	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609887593744	Marionette	INFO	Stopped listening on port 39855
+1609887599156	Marionette	INFO	Stopped listening on port 44821
+1609887622101	Marionette	INFO	Stopped listening on port 46819
+1609887935249	geckodriver	INFO	Listening on 127.0.0.1:49293
+1609887935253	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilepIVniL"
+1609887939596	Marionette	INFO	Listening on port 38059
+1609887939670	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609887966577	Marionette	INFO	Stopped listening on port 38059
+1609888230860	geckodriver	INFO	Listening on 127.0.0.1:38935
+1609888230865	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilevqx5sV"
+1609888235519	Marionette	INFO	Listening on port 37453
+1609888235578	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: services.settings: 
+  main/cfr-fxa Signature failed  TypeError: NetworkError when attempting to fetch resource.
+1609888243992	Marionette	INFO	Stopped listening on port 37453
+1609888268701	geckodriver	INFO	Listening on 127.0.0.1:50053
+1609888268707	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileBrM1ib"
+*** You are running in headless mode.
+1609888272919	Marionette	INFO	Listening on port 35975
+1609888274669	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609888324816	geckodriver	INFO	Listening on 127.0.0.1:58591
+1609888324821	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileLafZGP"
+*** You are running in headless mode.
+1609888329446	Marionette	INFO	Listening on port 40993
+1609888329534	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609888659992	geckodriver	INFO	Listening on 127.0.0.1:53255
+1609888659998	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileHb9cRJ"
+*** You are running in headless mode.
+1609888665101	Marionette	INFO	Listening on port 41657
+1609888665120	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609889289672	geckodriver	INFO	Listening on 127.0.0.1:37067
+1609889289676	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileC3JgvI"
+*** You are running in headless mode.
+1609889294718	Marionette	INFO	Listening on port 33935
+1609889294795	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609889344873	geckodriver	INFO	Listening on 127.0.0.1:38913
+1609889344877	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilekM9UhC"
+*** You are running in headless mode.
+1609889349319	Marionette	INFO	Listening on port 36931
+1609889349397	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609889406090	geckodriver	INFO	Listening on 127.0.0.1:51879
+1609889406095	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileJSx4wV"
+*** You are running in headless mode.
+1609889410737	Marionette	INFO	Listening on port 39589
+1609889410822	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609889459977	geckodriver	INFO	Listening on 127.0.0.1:32983
+1609889459987	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilewFxPvI"
+*** You are running in headless mode.
+1609889464451	Marionette	INFO	Listening on port 39741
+1609889464500	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609889512718	geckodriver	INFO	Listening on 127.0.0.1:48775
+1609889512722	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilebZ0dYU"
+*** You are running in headless mode.
+1609889517468	Marionette	INFO	Listening on port 35747
+1609889517536	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609889545300	geckodriver	INFO	Listening on 127.0.0.1:45345
+1609889545305	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile1OGJCy"
+*** You are running in headless mode.
+1609889549970	Marionette	INFO	Listening on port 35867
+1609889550019	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609889730160	geckodriver	INFO	Listening on 127.0.0.1:56279
+1609889730164	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile5iF1Mi"
+*** You are running in headless mode.
+1609889734700	Marionette	INFO	Listening on port 45377
+1609889734797	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/ExtensionCommon.jsm, line 501: TypeError: wgc is null
+JavaScript error: /_/mss/boq-identity/_/js/k=boq-identity.ConsentUi.it.NOO1YBuDIZA.es5.O/am=Ew/d=1/excm=_b,_tp,displayintroui/ed=1/dg=0/wt=2/ct=zgms/rs=AOaEmlFDRwN2p-MdKxjgWbSyL6U-ydmi1w/m=_b,_tp, line 481: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: /_/mss/boq-identity/_/js/k=boq-identity.ConsentUi.it.NOO1YBuDIZA.es5.O/am=Ew/d=1/excm=_b,_tp,displayintroui/ed=1/dg=0/wt=2/ct=zgms/rs=AOaEmlFDRwN2p-MdKxjgWbSyL6U-ydmi1w/m=_b,_tp, line 481: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: , line 0: uncaught exception: Object
+console.error: (new TypeError("parent is null", "resource://devtools/client/inspector/shared/style-change-tracker.js", 67))
+TypeError: parent is null: canMutationImpactCurrentStyles@resource://devtools/client/inspector/shared/style-change-tracker.js:67:24
+onMutations@resource://devtools/client/inspector/shared/style-change-tracker.js:84:41
+_emit@resource://devtools/shared/event-emitter.js:226:34
+emit@resource://devtools/shared/event-emitter.js:172:18
+emit@resource://devtools/shared/event-emitter.js:324:18
+getMutations@resource://devtools/client/fronts/walker.js:409:10
+
+console.error: (new TypeError("container.node.targetFront is null", "resource://devtools/client/inspector/markup/markup.js", 2245))
+console.error: (new TypeError("container.node.targetFront is null", "resource://devtools/client/inspector/markup/markup.js", 2245))
+console.error: (new TypeError("parent is null", "resource://devtools/client/inspector/shared/style-change-tracker.js", 67))
+TypeError: parent is null: canMutationImpactCurrentStyles@resource://devtools/client/inspector/shared/style-change-tracker.js:67:24
+onMutations@resource://devtools/client/inspector/shared/style-change-tracker.js:84:41
+_emit@resource://devtools/shared/event-emitter.js:226:34
+emit@resource://devtools/shared/event-emitter.js:172:18
+emit@resource://devtools/shared/event-emitter.js:324:18
+getMutations@resource://devtools/client/fronts/walker.js:409:10
+
+console.error: "Error while calling actor 'pagestyle's method 'getLayout'" "node is null"
+console.error: "getLayout@resource://devtools/server/actors/styles.js:1013:5\nhandler@resource://devtools/shared/protocol/Actor.js:162:37\nonPacket@resource://devtools/server/devtools-server-connection.js:380:58\nreceiveMessage@resource://devtools/shared/transport/child-transport.js:66:16\n"
+console.error: (new TypeError("parent is null", "resource://devtools/client/inspector/shared/style-change-tracker.js", 67))
+TypeError: parent is null: canMutationImpactCurrentStyles@resource://devtools/client/inspector/shared/style-change-tracker.js:67:24
+onMutations@resource://devtools/client/inspector/shared/style-change-tracker.js:84:41
+_emit@resource://devtools/shared/event-emitter.js:226:34
+emit@resource://devtools/shared/event-emitter.js:172:18
+emit@resource://devtools/shared/event-emitter.js:324:18
+getMutations@resource://devtools/client/fronts/walker.js:409:10
+
+console.error: (new TypeError("container.node.targetFront is null", "resource://devtools/client/inspector/markup/markup.js", 2245))
+console.error: (new TypeError("container.node.targetFront is null", "resource://devtools/client/inspector/markup/markup.js", 2245))
+console.error: (new Error("Protocol error (TypeError): node is null from: server0.conn0.child2/pagestyle26 (resource://devtools/server/actors/styles.js:1013:5)", "resource://devtools/shared/protocol/Front.js", 323))
+1609894706219	Marionette	INFO	Stopped listening on port 44211
+1609894800257	geckodriver	INFO	Listening on 127.0.0.1:41867
+1609894801224	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileFpXTHc"
+1609894812336	Marionette	INFO	Listening on port 45909
+1609894812443	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609895332064	geckodriver	INFO	Listening on 127.0.0.1:51493
+1609895332070	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile1JXphZ"
+*** You are running in headless mode.
+1609895336686	Marionette	INFO	Listening on port 45173
+1609895336785	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609895413438	geckodriver	INFO	Listening on 127.0.0.1:46821
+1609895413443	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileCJo09T"
+*** You are running in headless mode.
+1609895418515	Marionette	INFO	Listening on port 34909
+1609895418579	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609895549092	geckodriver	INFO	Listening on 127.0.0.1:44489
+1609895549100	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileY6kuYU"
+*** You are running in headless mode.
+1609895553930	Marionette	INFO	Listening on port 34281
+1609895554031	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609895615339	geckodriver	INFO	Listening on 127.0.0.1:49443
+1609895615349	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilej2H0Go"
+*** You are running in headless mode.
+1609895621445	Marionette	INFO	Listening on port 38853
+1609895621497	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609895683525	Marionette	INFO	Stopped listening on port 45909
+1609895899292	geckodriver	INFO	Listening on 127.0.0.1:55579
+1609895900255	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile5P7qNv"
+*** You are running in headless mode.
+1609895911557	Marionette	INFO	Listening on port 41249
+1609895911606	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609895962953	geckodriver	INFO	Listening on 127.0.0.1:35775
+1609895962963	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileXkdFRx"
+*** You are running in headless mode.
+1609895969070	Marionette	INFO	Listening on port 34719
+1609895969106	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609896194000	geckodriver	INFO	Listening on 127.0.0.1:41799
+1609896195022	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile3gPZ94"
+*** You are running in headless mode.
+1609896213336	Marionette	INFO	Listening on port 34247
+1609896213876	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609936540412	geckodriver	INFO	Listening on 127.0.0.1:55107
+1609936541272	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofiley6nJm2"
+*** You are running in headless mode.
+1609936546186	Marionette	INFO	Listening on port 40781
+1609936546297	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609936575165	geckodriver	INFO	Listening on 127.0.0.1:37881
+1609936575170	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileTk2KRO"
+*** You are running in headless mode.
+1609936579378	Marionette	INFO	Listening on port 45153
+1609936579388	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609936624580	geckodriver	INFO	Listening on 127.0.0.1:53645
+1609936624585	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileM31s14"
+*** You are running in headless mode.
+1609936629232	Marionette	INFO	Listening on port 35451
+1609936629298	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609936642868	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:245:13
+TimedPromise@chrome://marionette/content/sync.js:230:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:416:10
+webdriverClickElement@chrome://marionette/content/interaction.js:182:31
+1609936809554	geckodriver	INFO	Listening on 127.0.0.1:59009
+1609936809559	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileoNQbgk"
+*** You are running in headless mode.
+1609936814181	Marionette	INFO	Listening on port 37407
+1609936814273	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609936828502	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:245:13
+TimedPromise@chrome://marionette/content/sync.js:230:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:416:10
+webdriverClickElement@chrome://marionette/content/interaction.js:182:31
+1609937196541	geckodriver	INFO	Listening on 127.0.0.1:50459
+1609937196546	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileLnmCqA"
+*** You are running in headless mode.
+1609937201456	Marionette	INFO	Listening on port 46667
+1609937201482	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609937278356	geckodriver	INFO	Listening on 127.0.0.1:33581
+1609937278361	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileYf5cNt"
+*** You are running in headless mode.
+1609937282608	Marionette	INFO	Listening on port 46625
+1609937282683	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609937309229	geckodriver	INFO	Listening on 127.0.0.1:46921
+1609937309233	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile6DnUcH"
+*** You are running in headless mode.
+1609937313476	Marionette	INFO	Listening on port 44075
+1609937313598	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+1609937376777	geckodriver	INFO	Listening on 127.0.0.1:48043
+1609937376787	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile6zX3wx"
+*** You are running in headless mode.
+1609937381127	Marionette	INFO	Listening on port 39611
+1609937381202	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609937395071	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:245:13
+TimedPromise@chrome://marionette/content/sync.js:230:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:416:10
+webdriverClickElement@chrome://marionette/content/interaction.js:182:31
+1609937405293	geckodriver	INFO	Listening on 127.0.0.1:45291
+1609937405298	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileXnJOtP"
+*** You are running in headless mode.
+1609937410120	Marionette	INFO	Listening on port 45143
+1609937410214	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609937433529	geckodriver	INFO	Listening on 127.0.0.1:35223
+1609937433534	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile8ioyQB"
+*** You are running in headless mode.
+1609937437806	Marionette	INFO	Listening on port 36083
+1609937437951	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609937462519	geckodriver	INFO	Listening on 127.0.0.1:57703
+1609937462525	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile6EkRd8"
+*** You are running in headless mode.
+1609937466612	Marionette	INFO	Listening on port 41923
+1609937466841	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609937701017	geckodriver	INFO	Listening on 127.0.0.1:45279
+1609937701022	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilefQH0Xr"
+*** You are running in headless mode.
+1609937706951	Marionette	INFO	Listening on port 42039
+1609937707051	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609937730474	geckodriver	INFO	Listening on 127.0.0.1:45293
+1609937730480	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilePsD8Ac"
+*** You are running in headless mode.
+1609937735154	Marionette	INFO	Listening on port 45137
+1609937735254	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609937761214	geckodriver	INFO	Listening on 127.0.0.1:41283
+1609937761220	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilebOZ6e2"
+*** You are running in headless mode.
+1609937765861	Marionette	INFO	Listening on port 34401
+1609937765937	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609937790222	geckodriver	INFO	Listening on 127.0.0.1:51249
+1609937790245	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileCokpA5"
+*** You are running in headless mode.
+1609937796080	Marionette	INFO	Listening on port 36313
+1609937796096	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609938216616	geckodriver	INFO	Listening on 127.0.0.1:51215
+1609938217595	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileYAMFd2"
+1609938252601	Marionette	INFO	Listening on port 38017
+1609938253201	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609938280256	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:245:13
+TimedPromise@chrome://marionette/content/sync.js:230:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:416:10
+webdriverClickElement@chrome://marionette/content/interaction.js:182:31
+1609938291621	geckodriver	INFO	Listening on 127.0.0.1:40533
+1609938292125	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilegfhWHV"
+Exiting due to channel error.
+Exiting due to channel error.
+1609938482927	geckodriver	INFO	Listening on 127.0.0.1:51663
+1609938482954	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileyyyLPi"
+1609938491189	Marionette	INFO	Listening on port 46125
+1609938491215	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609938521993	geckodriver	INFO	Listening on 127.0.0.1:52219
+1609938521999	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileimHYwd"
+1609938537876	Marionette	INFO	Listening on port 42251
+1609938538156	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/ExtensionCommon.jsm, line 475: TypeError: this.cloneScope is null
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0xB000D,name=PBackgroundIDBDatabase::Msg_Invalidate) Channel error: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0xB000E,name=PBackgroundIDBDatabase::Msg_CloseAfterInvalidationComplete) Channel error: cannot send/recv
+
+1609938591342	Marionette	INFO	Stopped listening on port 46125
+1609938594231	geckodriver	INFO	Listening on 127.0.0.1:38459
+1609938594671	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileAT8xau"
+1609938594971	Marionette	INFO	Stopped listening on port 42251
+1609938596089	Marionette	INFO	Stopped listening on port 38017
+1609938610083	Marionette	INFO	Listening on port 39971
+1609938610128	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+Exiting due to channel error.
+1609938735616	geckodriver	INFO	Listening on 127.0.0.1:35721
+1609938735621	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileN7hyeo"
+1609938740083	Marionette	INFO	Listening on port 36333
+1609938740163	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609938763652	geckodriver	INFO	Listening on 127.0.0.1:40385
+1609938763657	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilecV67iL"
+1609938768122	Marionette	INFO	Listening on port 32985
+1609938768171	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609938780763	Marionette	INFO	Stopped listening on port 36333
+1609938783176	Marionette	INFO	Stopped listening on port 32985
+1609938800927	geckodriver	INFO	Listening on 127.0.0.1:43307
+1609938800931	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileCzBbno"
+1609938810062	Marionette	INFO	Listening on port 37091
+1609938810357	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609938847354	Marionette	INFO	Stopped listening on port 37091
+1609938892480	geckodriver	INFO	Listening on 127.0.0.1:51663
+1609938892485	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileBPNXM0"
+1609938897081	Marionette	INFO	Listening on port 40547
+1609938897107	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609938961320	Marionette	INFO	Stopped listening on port 40547
+1609939105908	geckodriver	INFO	Listening on 127.0.0.1:33985
+1609939105912	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileJG8i0o"
+1609939110292	Marionette	INFO	Listening on port 33789
+1609939110378	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1609939124271	Marionette	WARN	TimedPromise timed out after 500 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:245:13
+TimedPromise@chrome://marionette/content/sync.js:230:10
+interaction.flushEventLoop@chrome://marionette/content/interaction.js:416:10
+webdriverClickElement@chrome://marionette/content/interaction.js:182:31
