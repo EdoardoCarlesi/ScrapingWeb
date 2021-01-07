@@ -1,20 +1,114 @@
 import numpy as np
 import pandas as pd
-from urllib.request import Request, urlopen
 import requests
+import time
 from bs4 import BeautifulSoup
+from urllib.request import Request, urlopen
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-import time
-import numpy
-import pandas as pd
 
 
-def scrape_titles_and_prices(source=None, page_num=None, remote=True): 
+def scrape_cardmarket(source=None, page_num=None, remote=True, cm_type=None): 
     """ Given a page source (ABUgames format!) we extract the card names and all the possible prices """
 
     # Basic paths and urls
-    #base_path = 'output/abugames_mox.'
+    base_path = 'output/cardmarket_' + cm_type + '.'
+    tmp_out = base_path + str(page_num) + '.html'
+
+    # If reading a remote online page
+    if remote:
+
+        # Pass the source file extraced with Selenium 
+        soup = BeautifulSoup(source, 'lxml')
+
+        # We do some cleaning as well as a local html copy
+        html = soup.prettify()  
+
+        print(f'Exporting to {tmp_out}')
+
+        # Dump the clean version to a temporary output
+        with open(tmp_out,"w") as out:
+            for i in range(0, len(html)):
+                try:
+                    out.write(html[i])
+                except Exception:
+                    pass
+
+    # Read the output from a local source
+    else:
+        print(f'Extracting from local file: {tmp_out}')
+
+        # Columns for the dataframe
+        columns = []
+
+        # Now read the cleaned up version of the file
+        soup = BeautifulSoup(open(tmp_out, 'r'), 'lxml')
+
+        # Once we have the page let's find all the card names
+        scrape_title = [i.text.replace('\n', '').replace('  ', '')
+                for i in soup.find_all("div", {"class":"col-10 col-md-8 px-2 flex-column align-items-start justify-content-center"})]
+
+        # Remove element number zero, use it as column name
+        columns.append(scrape_title[0])
+        scrape_title.remove(scrape_title[0])
+
+        # Initialize a numpy array to hold all the remaining data
+        n_titles = len(scrape_title)
+        clean_prices = np.zeros((n_titles, 5), dtype=float)
+
+        # Scrape the Number columm
+        scrape_number = [i.text.replace('\n', '').replace('  ', '')
+                for i in soup.find_all("div", {"class":"col-md-2 d-none d-lg-flex has-content-centered"})]
+
+        columns.append(scrape_number[0])
+        scrape_number.remove(scrape_number[0])
+        clean_prices[:, 0] = np.array(scrape_number)
+
+        # Scrape the Available column
+        scrape_available = [i.text.replace('\n', '').replace('  ', '')
+                for i in soup.find_all("div", {"class":"col-availability px-2"})]
+
+        columns.append(scrape_available[0])
+        scrape_available.remove(scrape_available[0])
+        clean_prices[:, 1] = np.array(scrape_available)
+ 
+        # Scrape the From column
+        scrape_from = [i.text.replace('\n', '').replace('  ', '').replace(',', '.').replace(' ', '').replace('€', '')
+                for i in soup.find_all("div", {"class":"col-price pr-sm-2"})]
+
+        columns.append(scrape_from[0])
+        scrape_from.remove(scrape_from[0])
+        clean_prices[:, 2] = np.array(scrape_from)
+ 
+        # Scrape the avail foil
+        scrape_avail_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '.').replace(' ', '').replace('€', '')
+                for i in soup.find_all("div", {"class":"col-availability d-none d-lg-flex"})]
+
+        columns.append(scrape_avail_foil[0])
+        scrape_avail_foil.remove(scrape_avail_foil[0])
+        clean_prices[:, 3] = np.array(scrape_avail_foil)
+
+        # Scrape the from foil
+        scrape_from_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '.').replace(' ', '').replace('€', '')
+                for i in soup.find_all("div", {"class":"col-price d-none d-lg-flex pr-lg-2"})]
+
+        columns.append(scrape_from_foil[0])
+        scrape_from_foil.remove(scrape_from_foil[0])
+        clean_prices[:, 4] = np.array(scrape_from_foil)
+
+        data = pd.DataFrame(columns = columns)
+        data[columns[0]] = scrape_title
+
+        for i, col in enumerate(columns[1:]):
+            data[col] = clean_prices[:, i]
+
+        return data
+
+
+def scrape_abugames(source=None, page_num=None, remote=True): 
+    """ Given a page source (ABUgames format!) we extract the card names and all the possible prices """
+
+    # Basic paths and urls
     base_path = 'output/abugames.'
     tmp_out = base_path + str(page_num) + '.html'
 
@@ -76,8 +170,6 @@ def scrape_titles_and_prices(source=None, page_num=None, remote=True):
             n_elements -= 1
 
         price = clean_prices[counter]
-
-        #print(clean_prices)
 
         #The table might have some missing elements, so we need to fill everything up keeping in mind that some elements will be missing
         for i_row in range(0, n_rows): 
@@ -169,45 +261,50 @@ def get_page_source(url=None, show_browser=False, time_sleep=10, driver=None):
     return source, driver
 
 
-def extract_cardmarket():
-    """ TODO: extract data from cardmarket """
+def extract_cardmarket_weekly():
+    """ This only works with the weekly top """
+
     url = 'https://www.cardmarket.com/en/Magic/Data/Weekly-Top-Cards'
     req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     webpage = urlopen(req).read()
     webs = pd.read_html(webpage)
-    print(type(webs[0]))
-    print(webs[0].to_csv('output/cardmarket.csv'))
-    print(webs)
+    webs[0].to_csv('output/cardmarket.csv')
 
-
-if __name__ == '__main__':
-    """ Main wrapper """
+    return webs[0]
     
-    # Should we open the browser and show it or run it in the background
-    show_browser = False
 
-    # Should we use remote URL (on the internet) or local data previously downloaded
-    remote = False
+def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=None):
+    """ This is a function that loops over all the pages and first dumpsto local html then extracts tables """
 
-    # ABUgames main url
+    # The basic url to start scraping from
     url = 'https://abugames.com/buylist?fbclid=IwAR3gw3BG40HBl6LLSIksEhyyqYXW6q511u6LQ9Pt2J63yWBJaOHMyjfe-k4'
-    #url = 'https://abugames.com/buylist/singles?search=mox'
 
-    # Set the inital page to the final page that we want to analyze
-    i_page = 1
-    n_pages = 5
-
-    # If remote make sure we are starting from the right page, so click on it and reload the content
+    # If working remotely then we need to first get the data from the web
     if remote:
-        print('MTG Web scraper running remotely.')
 
-        source, driver = get_page_source(url=url, show_browser=show_browser)
-        xpath_str = '//button[contains(text(), "' + str(i_page) + '")]'
-        driver.find_element_by_xpath(xpath_str).click() 
+        # We need to skip some pages forward to reach for the inital page (i_page)
+        count_page = 2
+        skip = 2
+        source, driver = get_page_source(url=url, show_browser=show_browser) 
         time.sleep(10)
-        source = driver.page_source
-        
-    # If not grabbing data from remote we will dump it all to csv files, which can be merged into a single dataframe
+
+        print(f'Skipping to page {count_page}')
+
+        # Loop and move forward (click) until we reach the desired starting page
+        while (count_page + skip < i_page):
+            xpath_str = '//button[contains(text(), "' + str(count_page) + '")]'
+            driver.find_element_by_xpath(xpath_str).click() 
+
+            # We skip some pages to clikc to speedup
+            count_page += skip
+
+            print(f'Skipping to page {count_page}')
+
+            # Wait some time but not too much, this one is pretty fast
+            time.sleep(0.5)
+            source = driver.page_source
+
+    # Else, if we are not grabbing data from remote we will dump it all to csv files, which can be merged into a single dataframe
     else:
         full_data = pd.DataFrame()
 
@@ -218,21 +315,21 @@ if __name__ == '__main__':
     for i in range(i_page, n_pages+1):
 
         out_file = 'output/abugames_data_pag.' + str(i) + '.csv'
-        data = scrape_titles_and_prices(source=source, page_num=i, remote=remote)
+        data = scrape_abugames(source=source, page_num=i, remote=remote) 
 
         # We need to click on the next page, that is, i+1
         xpath_str = '//button[contains(text(), "' + str(i+1) + '")]'
-
-        # This is an alternative to keep in mind 
-        #xpath_str = '//button[contains(text(), "NEXT")]'
+        xpath_str_next = '//button[contains(text(), "NEXT")]'
 
         # Click on the page only if we did not 
         if remote:
             print(f'Page {i} saved to file {out_file}, going to page number: {i}')
-            driver.find_element_by_xpath(xpath_str).click() 
+
+            # This is clicking on NEXT simply...
+            driver.find_element_by_xpath(xpath_str_next).click() 
 
             # Wait for some time after clicking on the link so that the page can load correctly
-            time.sleep(10)
+            time.sleep(5)
 
             # Get the new page source
             source = driver.page_source
@@ -243,10 +340,10 @@ if __name__ == '__main__':
 
             if i == i_page:
                 full_data = data.copy()
-                print(i)
+                #print(i)
             else:
                 full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
-                print('*', i)
+                #print('*', i)
 
     # Once we have ended looping on remote URLs we can close / quit everything 
     if remote:
@@ -260,16 +357,76 @@ if __name__ == '__main__':
         print(f'Printing full data to {out_file}')
         full_data.to_csv(out_file, index=False)
 
-'''
-THERE MIGHT BE SOME MINT CARDS. VERY VERY RARE. but this screws up the way things are organized
-'''
+    
+def scrape_all_cardmarket(i_page=None, n_pages=None, remote=None, show_browser=None, cm_type=None):
+    """ Loop over all cardmarket page and extract data """
 
-#print(source)
-#/html/body/abu-root/div/abu-public/sd-buylist/section/div/div/div/div[2]/div[2]/div/single-checklist-card-buylist/div/div[3]/div[1]
-'''
-page = requests.get(url)
-print(page.content)
-soup = BeautifulSoup(page.content, 'html.parser')
-print(soup.prettify())
-'''
+    # Main cardmarket url
+    #url_base = 'https://www.cardmarket.com/en/Magic/Products/Singles?site='; cm_type='std'
+
+    # Cardmarket ordered by descending price, most expensive first
+    url_base = 'https://www.cardmarket.com/en/Magic/Products/Singles?idCategory=1&idExpansion=0&idRarity=0&sortBy=price_desc&site='; cm_type='price_order'
+
+    counter = i_page
+
+    if remote:
+
+        # Loop on all the pages
+        for counter in range(i_page, n_pages+1):
+            url = url_base + str(counter)
+            source, driver = get_page_source(url=url, show_browser=show_browser)
+            scrape_cardmarket(source=source, page_num=counter, remote=remote, cm_type=cm_type)
+            time.sleep(10)
+            driver.close()
+    
+    # If not grabbing data from remote we will dump it all to csv files, which can be merged into a single dataframe
+    else:
+        print('MTG Web scraper running on local files.')
+
+        full_data = pd.DataFrame()
+        source = None
+
+        # This is a loop on the local html files that extracted the information from the website
+        for i in range(i_page, n_pages+1):
+    
+            # Name of the csv output
+            out_file = 'output/cardmarket_data_pag.' + str(i) + '.csv'
+            data = scrape_cardmarket(source=source, page_num=i, remote=remote, cm_type=cm_type)
+    
+            # Sanity check
+            print(f'Saving dataframe to {out_file}. File header:')
+            print(data.head(10))
+
+            data.to_csv(out_file, index=False)
+
+            # Concatenate all the DataFrames into a single df
+            if i == i_page:
+                full_data = data.copy()
+            else:
+                full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
+
+        # Print to a single dataframe
+        str_num = str(i_page) + '-' + str(n_pages)
+        out_file = 'output/cardmarket_all_data_' + str_num + '.csv'
+
+        print(f'Printing full data to {out_file}')
+        full_data.to_csv(out_file, index=False)
+
+
+if __name__ == '__main__':
+    """ Main wrapper """
+    
+    # Should we open the browser and show it or run it in the background
+    show_browser = False
+
+    # Should we use remote URL (on the internet) or local data previously downloaded
+    remote = True
+
+    # Set the inital page to the final page that we want to analyze
+    i_page = 1
+    n_pages = 50
+
+    #scrape_all_abugames(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser)
+    scrape_all_cardmarket(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser)
+
 
