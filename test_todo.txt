@@ -1,0 +1,10 @@
+Extracting from local file: output/abugames.1280.html
+Traceback (most recent call last):
+  File "mtg_scraper.py", line 434, in <module>
+    scrape_all_abugames(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
+  File "mtg_scraper.py", line 318, in scrape_all_abugames
+    data = scrape_abugames(source=source, page_num=i, remote=remote) 
+  File "mtg_scraper.py", line 189, in scrape_abugames
+    all_prices[i_row, 2] = float(clean_prices[counter])
+ValueError: could not convert string to float: 'NM'
+

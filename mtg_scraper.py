@@ -273,7 +273,7 @@ def extract_cardmarket_weekly():
     return webs[0]
     
 
-def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=None):
+def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=None, verbose=False):
     """ This is a function that loops over all the pages and first dumpsto local html then extracts tables """
 
     # The basic url to start scraping from
@@ -335,7 +335,10 @@ def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=Non
             source = driver.page_source
         else:
             print(f'Saving dataframe to {out_file}. File header:')
-            print(data.head(10))
+
+            if verbose:
+                print(data.head(10))
+
             data.to_csv(out_file, index=False)
 
             if i == i_page:
@@ -358,7 +361,7 @@ def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=Non
         full_data.to_csv(out_file, index=False)
 
     
-def scrape_all_cardmarket(i_page=None, n_pages=None, remote=None, show_browser=None, cm_type=None):
+def scrape_all_cardmarket(i_page=None, n_pages=None, remote=None, show_browser=None, cm_type=None, verbose=False):
     """ Loop over all cardmarket page and extract data """
 
     # Main cardmarket url
@@ -395,7 +398,9 @@ def scrape_all_cardmarket(i_page=None, n_pages=None, remote=None, show_browser=N
     
             # Sanity check
             print(f'Saving dataframe to {out_file}. File header:')
-            print(data.head(10))
+
+            if verbose:
+               print(data.head(10))
 
             data.to_csv(out_file, index=False)
 
@@ -420,13 +425,13 @@ if __name__ == '__main__':
     show_browser = False
 
     # Should we use remote URL (on the internet) or local data previously downloaded
-    remote = True
+    remote = False
 
     # Set the inital page to the final page that we want to analyze
-    i_page = 1
-    n_pages = 50
+    i_page = 1281
+    n_pages = 2000
 
-    #scrape_all_abugames(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser)
-    scrape_all_cardmarket(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser)
+    scrape_all_abugames(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
+    #scrape_all_cardmarket(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
 
 
