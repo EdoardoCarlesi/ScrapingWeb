@@ -62,7 +62,11 @@ def scrape_cardmarket(source=None, page_num=None, remote=True, cm_type=None):
 
         columns.append(scrape_number[0])
         scrape_number.remove(scrape_number[0])
-        clean_prices[:, 0] = np.array(scrape_number)
+
+        try:
+            clean_prices[:, 0] = np.array(scrape_number)
+        except ValueError:
+            pass
 
         # Scrape the Available column
         scrape_available = [i.text.replace('\n', '').replace('  ', '')
@@ -71,17 +75,18 @@ def scrape_cardmarket(source=None, page_num=None, remote=True, cm_type=None):
         columns.append(scrape_available[0])
         scrape_available.remove(scrape_available[0])
         clean_prices[:, 1] = np.array(scrape_available)
- 
+
         # Scrape the From column
-        scrape_from = [i.text.replace('\n', '').replace('  ', '').replace(',', '.').replace(' ', '').replace('€', '')
+        scrape_from = [i.text.replace('\n', '').replace('  ', '').replace(',', '').replace(' ', '').replace('€', '').replace('N/A', '0').replace('.','')
                 for i in soup.find_all("div", {"class":"col-price pr-sm-2"})]
 
         columns.append(scrape_from[0])
         scrape_from.remove(scrape_from[0])
         clean_prices[:, 2] = np.array(scrape_from)
- 
+        clean_prices[:, 2] /= 100.0
+
         # Scrape the avail foil
-        scrape_avail_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '.').replace(' ', '').replace('€', '')
+        scrape_avail_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '').replace(' ', '').replace('€', '')
                 for i in soup.find_all("div", {"class":"col-availability d-none d-lg-flex"})]
 
         columns.append(scrape_avail_foil[0])
@@ -89,7 +94,7 @@ def scrape_cardmarket(source=None, page_num=None, remote=True, cm_type=None):
         clean_prices[:, 3] = np.array(scrape_avail_foil)
 
         # Scrape the from foil
-        scrape_from_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '.').replace(' ', '').replace('€', '')
+        scrape_from_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '').replace(' ', '').replace('€', '').replace('N/A', '0')
                 for i in soup.find_all("div", {"class":"col-price d-none d-lg-flex pr-lg-2"})]
 
         columns.append(scrape_from_foil[0])
@@ -428,10 +433,10 @@ if __name__ == '__main__':
     remote = False
 
     # Set the inital page to the final page that we want to analyze
-    i_page = 1281
-    n_pages = 2000
+    i_page = 1
+    n_pages = 50
 
-    scrape_all_abugames(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
-    #scrape_all_cardmarket(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
+    #scrape_all_abugames(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
+    scrape_all_cardmarket(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
 
 
