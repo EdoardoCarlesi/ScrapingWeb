@@ -423,7 +423,7 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
 
         # Get the total number of expansions
         for serie in series_ids:
-
+            print(serie)
             # First get the number of pages for this expansion
             serie = str(serie)
             url = url_base_type + serie + suffix_url + '1'
@@ -450,7 +450,7 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
                         print(f'Reading from {url}')
                         source, driver = get_page_source(url=url, show_browser=show_browser)
                         counter_str = serie + '.' + str(counter)
-                        n_pages = scrape_cardmarket(source=source, serie=series, page_num=counter_str, remote=remote, cm_type=cm_type)
+                        n_pages = scrape_cardmarket(source=source, series=serie, page_num=counter_str, remote=remote, cm_type=cm_type)
                         time.sleep(10)
                         driver.close()
             
@@ -499,7 +499,45 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
                     print(f'Printing full data to {out_file}')
                     full_data.to_csv(out_file, index=False)
                     '''
-#def merge_all_abugames():
+
+def merge_all_abugames(i_ini=1, i_end=5122, f_out='output/abugames_completo.csv'):
+    """ Dump all the files to the same CSV """
+
+    file_root='output/abugames_'
+    this_abugames = file_root + '1.csv'
+    full_data = pd.read_csv(this_abugames)
+
+    for i in range(i_ini+1, i_end):
+        this_abugames = file_root + str(i) + '.csv'
+        data = pd.read_csv(this_abugames)
+        full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
+
+    print('Merging all files to {f_out}')
+    full_data.to_csv(f_out)
+
+
+def merge_all_cardmarket(i_ini=1, i_max=200, f_out='output/cardmarket_completo.csv'):
+    """ Dump all the files to the same CSV """
+
+    file_root='output/cardmarket_'
+    this_cardmarket = file_root + '1.1.csv'
+    full_data = pd.read_csv(this_cardmarket)
+    series_ids = rs.return_series()
+
+    # Loop on the expansions
+    for serie in series_ids:
+
+        # Loop on the assumed max number of pages per expansion
+        for i in range(i_ini+1, i_end):
+            this_cardmarket = file_root + str(serie) + '.' + str(i) + '.csv'
+
+            # Read only if file exists
+            if os.path.isfile(this_cardmarket):
+                data = pd.read_csv(this_cardmarket)
+                full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
+
+    print('Merging all files to {f_out}')
+    full_data.to_csv(f_out)
 
 
 
@@ -510,7 +548,7 @@ if __name__ == '__main__':
     show_browser = False
 
     # Should we use remote URL (on the internet) or local data previously downloaded
-    remote = False
+    remote = True
 
     # Set the inital page to the final page that we want to analyze
     i_page = 5082
@@ -518,5 +556,8 @@ if __name__ == '__main__':
 
     #scrape_all_abugames(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
     scrape_all_cardmarket(remote=remote, show_browser=show_browser, verbose=False)
+
+    
+
 
 
