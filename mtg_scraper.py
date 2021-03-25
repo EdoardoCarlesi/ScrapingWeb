@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 import requests
 import time
+import re
+import os
+import read_series as rs
 from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
 from selenium import webdriver
@@ -23,8 +26,7 @@ def scrape_cardmarket(source=None, page_num=None, remote=True, cm_type=None):
 
         # We do some cleaning as well as a local html copy
         html = soup.prettify()  
-
-        print(f'Exporting to {tmp_out}')
+        page_num = soup.find_all("span", {"class":"mx-1"})
 
         # Dump the clean version to a temporary output
         with open(tmp_out,"w") as out:
@@ -33,6 +35,13 @@ def scrape_cardmarket(source=None, page_num=None, remote=True, cm_type=None):
                     out.write(html[i])
                 except Exception:
                     pass
+
+        try:
+            pn = re.search(' of \d', str(page_num)).group()[4:]
+            return int(pn)
+        except:
+            print('Problem extracting page number, setting to default = 1')
+            return 1
 
     # Read the output from a local source
     else:
@@ -254,15 +263,21 @@ def get_page_source(url=None, show_browser=False, time_sleep=10, driver=None):
             options.add_argument("--headless")
             driver = webdriver.Firefox(options=options)
 
-        driver.get(url)
+        try:
+            driver.get(url)
+         
+            # Wait for the page to load correctly
+            print('Waiting for the page to load correctly...')
+            time.sleep(time_sleep)
 
-    # Wait for the page to load correctly
-    print('Waiting for the page to load correctly...')
-    time.sleep(time_sleep)
+            # Once the page has been 
+            source = driver.page_source
+       
+        except:
+            print(f'Url {url} could not be reached')
+            source = None
+            driver = None
 
-    # Once the page has been 
-    source = driver.page_source
-    
     return source, driver
 
 
@@ -366,7 +381,7 @@ def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=Non
         full_data.to_csv(out_file, index=False)
 
     
-def scrape_all_cardmarket(i_page=None, n_pages=None, remote=None, show_browser=None, cm_type=None, verbose=False):
+def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=False):
     """ Loop over all cardmarket page and extract data """
 
     # Main cardmarket url
@@ -374,19 +389,49 @@ def scrape_all_cardmarket(i_page=None, n_pages=None, remote=None, show_browser=N
 
     # Cardmarket ordered by descending price, most expensive first
     url_base = 'https://www.cardmarket.com/en/Magic/Products/Singles?idCategory=1&idExpansion=0&idRarity=0&sortBy=price_desc&site='; cm_type='price_order'
+    url_base_type = 'https://www.cardmarket.com/en/Magic/Products/Search?idCategory=0&idExpansion='; suffix_url='&idRarity=0&sortBy=price_desc&site='
+    #https://www.cardmarket.com/en/Magic/Products/Search?idCategory=0&idExpansion=1269&idRarity=0&sortBy=price_desc&perSite=100
+    #'https://www.cardmarket.com/en/Magic/Products/Search?idCategory=0&idExpansion=51&idRarity=0&sortBy=price_desc&site=2'
+    local_url = 'output/cardmarket_price_order.' #1513.1.html'
 
-    counter = i_page
+    counter = 0
+    series_ids = rs.return_series()
 
     if remote:
 
-        # Loop on all the pages
-        for counter in range(i_page, n_pages+1):
-            url = url_base + str(counter)
+        # Get the total number of expansions
+        for serie in series_ids:
+
+            # First get the number of pages for this expansion
+            serie = str(serie)
+            url = url_base_type + serie + suffix_url + '1'
             source, driver = get_page_source(url=url, show_browser=show_browser)
-            scrape_cardmarket(source=source, page_num=counter, remote=remote, cm_type=cm_type)
-            time.sleep(10)
-            driver.close()
-    
+
+            if source != None and driver != None:
+
+                counter_str = serie + '.' + str(counter)
+                n_pages = scrape_cardmarket(source=source, page_num=counter_str, remote=remote, cm_type=cm_type)
+                print(f'Expansion {serie} has n_pages: {n_pages}')
+                time.sleep(10)
+                driver.close()
+
+                # Loop on all the pages
+                for counter in range(1, n_pages+1):
+                    url = url_base + str(counter)
+                    url = url_base_type + serie + suffix_url + str(counter)
+                    check_url = local_url + str(serie) + '.' + str(counter) + '.html'
+                    
+                    if os.path.isfile(check_url):
+                        print(f'Url {url} exists locally: {check_url}')
+                    else:
+
+                        print(f'Reading from {url}')
+                        source, driver = get_page_source(url=url, show_browser=show_browser)
+                        counter_str = serie + '.' + str(counter)
+                        n_pages = scrape_cardmarket(source=source, page_num=counter_str, remote=remote, cm_type=cm_type)
+                        time.sleep(10)
+                        driver.close()
+            
     # If not grabbing data from remote we will dump it all to csv files, which can be merged into a single dataframe
     else:
         print('MTG Web scraper running on local files.')
@@ -395,7 +440,7 @@ def scrape_all_cardmarket(i_page=None, n_pages=None, remote=None, show_browser=N
         source = None
 
         # This is a loop on the local html files that extracted the information from the website
-        for i in range(i_page, n_pages+1):
+        for i in range(1, n_pages+1):
     
             # Name of the csv output
             out_file = 'output/cardmarket_data_pag.' + str(i) + '.csv'
@@ -410,7 +455,7 @@ def scrape_all_cardmarket(i_page=None, n_pages=None, remote=None, show_browser=N
             data.to_csv(out_file, index=False)
 
             # Concatenate all the DataFrames into a single df
-            if i == i_page:
+            if i == 1:
                 full_data = data.copy()
             else:
                 full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
@@ -430,13 +475,13 @@ if __name__ == '__main__':
     show_browser = False
 
     # Should we use remote URL (on the internet) or local data previously downloaded
-    remote = False
+    remote = True
 
     # Set the inital page to the final page that we want to analyze
-    i_page = 1
-    n_pages = 50
+    i_page = 0
+    n_pages = 6000
 
     #scrape_all_abugames(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
-    scrape_all_cardmarket(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
+    scrape_all_cardmarket(remote=remote, show_browser=show_browser, verbose=False)
 
 
