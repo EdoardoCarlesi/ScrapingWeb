@@ -11,12 +11,12 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
 
-def scrape_cardmarket(source=None, page_num=None, remote=True, cm_type=None): 
+def scrape_cardmarket(source=None, page_num=None, series=None, remote=True, cm_type=None): 
     """ Given a page source (ABUgames format!) we extract the card names and all the possible prices """
 
     # Basic paths and urls
-    base_path = 'output/cardmarket_' + cm_type + '.'
-    tmp_out = base_path + str(page_num) + '.html'
+    base_path = 'output/cardmarket_' + cm_type + '.' 
+    tmp_out = base_path + str(series) + '.' + str(page_num) + '.html'
 
     # If reading a remote online page
     if remote:
@@ -55,68 +55,74 @@ def scrape_cardmarket(source=None, page_num=None, remote=True, cm_type=None):
 
         # Once we have the page let's find all the card names
         scrape_title = [i.text.replace('\n', '').replace('  ', '')
-                for i in soup.find_all("div", {"class":"col-10 col-md-8 px-2 flex-column align-items-start justify-content-center"})]
+                #for i in soup.find_all("div", {"class":"col-10 col-md-8 px-2 flex-column align-items-start justify-content-center"})]
+                for i in soup.find_all("div", {"class":""})]
 
-        # Remove element number zero, use it as column name
-        columns.append(scrape_title[0])
-        scrape_title.remove(scrape_title[0])
+        if len(scrape_title) > 0:
 
-        # Initialize a numpy array to hold all the remaining data
-        n_titles = len(scrape_title)
-        clean_prices = np.zeros((n_titles, 5), dtype=float)
+            # Remove element number zero, use it as column name
+            columns.append(scrape_title[0])
+            scrape_title.remove(scrape_title[0])
 
-        # Scrape the Number columm
-        scrape_number = [i.text.replace('\n', '').replace('  ', '')
-                for i in soup.find_all("div", {"class":"col-md-2 d-none d-lg-flex has-content-centered"})]
+            # Initialize a numpy array to hold all the remaining data
+            n_titles = len(scrape_title)
+            clean_prices = np.zeros((n_titles, 5), dtype=float)
 
-        columns.append(scrape_number[0])
-        scrape_number.remove(scrape_number[0])
+            # Scrape the Number columm
+            scrape_number = [i.text.replace('\n', '').replace('  ', '')
+                    for i in soup.find_all("div", {"class":"col-md-2 d-none d-lg-flex has-content-centered"})]
 
-        try:
-            clean_prices[:, 0] = np.array(scrape_number)
-        except ValueError:
-            pass
+            columns.append(scrape_number[0])
+            scrape_number.remove(scrape_number[0])
 
-        # Scrape the Available column
-        scrape_available = [i.text.replace('\n', '').replace('  ', '')
-                for i in soup.find_all("div", {"class":"col-availability px-2"})]
+            try:
+                clean_prices[:, 0] = np.array(scrape_number)
+            except ValueError:
+                pass
 
-        columns.append(scrape_available[0])
-        scrape_available.remove(scrape_available[0])
-        clean_prices[:, 1] = np.array(scrape_available)
+            # Scrape the Available column
+            scrape_available = [i.text.replace('\n', '').replace('  ', '')
+                    for i in soup.find_all("div", {"class":"col-availability px-2"})]
 
-        # Scrape the From column
-        scrape_from = [i.text.replace('\n', '').replace('  ', '').replace(',', '').replace(' ', '').replace('€', '').replace('N/A', '0').replace('.','')
-                for i in soup.find_all("div", {"class":"col-price pr-sm-2"})]
+            columns.append(scrape_available[0])
+            scrape_available.remove(scrape_available[0])
+            clean_prices[:, 1] = np.array(scrape_available)
 
-        columns.append(scrape_from[0])
-        scrape_from.remove(scrape_from[0])
-        clean_prices[:, 2] = np.array(scrape_from)
-        clean_prices[:, 2] /= 100.0
+            # Scrape the From column
+            scrape_from = [i.text.replace('\n', '').replace('  ', '').replace(',', '').replace(' ', '').replace('€', '').replace('N/A', '0').replace('.','')
+                    for i in soup.find_all("div", {"class":"col-price pr-sm-2"})]
 
-        # Scrape the avail foil
-        scrape_avail_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '').replace(' ', '').replace('€', '')
-                for i in soup.find_all("div", {"class":"col-availability d-none d-lg-flex"})]
+            columns.append(scrape_from[0])
+            scrape_from.remove(scrape_from[0])
+            clean_prices[:, 2] = np.array(scrape_from)
+            clean_prices[:, 2] /= 100.0
 
-        columns.append(scrape_avail_foil[0])
-        scrape_avail_foil.remove(scrape_avail_foil[0])
-        clean_prices[:, 3] = np.array(scrape_avail_foil)
+            # Scrape the avail foil
+            scrape_avail_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '').replace(' ', '').replace('€', '')
+                    for i in soup.find_all("div", {"class":"col-availability d-none d-lg-flex"})]
 
-        # Scrape the from foil
-        scrape_from_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '').replace(' ', '').replace('€', '').replace('N/A', '0')
-                for i in soup.find_all("div", {"class":"col-price d-none d-lg-flex pr-lg-2"})]
+            columns.append(scrape_avail_foil[0])
+            scrape_avail_foil.remove(scrape_avail_foil[0])
+            clean_prices[:, 3] = np.array(scrape_avail_foil)
 
-        columns.append(scrape_from_foil[0])
-        scrape_from_foil.remove(scrape_from_foil[0])
-        clean_prices[:, 4] = np.array(scrape_from_foil)
+            # Scrape the from foil
+            scrape_from_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '').replace(' ', '').replace('€', '').replace('N/A', '0')
+                    for i in soup.find_all("div", {"class":"col-price d-none d-lg-flex pr-lg-2"})]
 
-        data = pd.DataFrame(columns = columns)
-        data[columns[0]] = scrape_title
+            columns.append(scrape_from_foil[0])
+            scrape_from_foil.remove(scrape_from_foil[0])
+            clean_prices[:, 4] = np.array(scrape_from_foil)
 
-        for i, col in enumerate(columns[1:]):
-            data[col] = clean_prices[:, i]
+            data = pd.DataFrame(columns = columns)
+            data[columns[0]] = scrape_title
 
-        return data
+            for i, col in enumerate(columns[1:]):
+                data[col] = clean_prices[:, i]
+
+            return data
+        else:
+
+            return None
 
 
 def scrape_abugames(source=None, page_num=None, remote=True): 
@@ -200,7 +206,12 @@ def scrape_abugames(source=None, page_num=None, remote=True):
                 counter += 1
                 all_prices[i_row, 1] = float(clean_prices[counter])
                 counter += 1
-                all_prices[i_row, 2] = float(clean_prices[counter])
+
+                try:
+                    all_prices[i_row, 2] = float(clean_prices[counter])
+                except:
+                    all_prices[i_row, 2] = 0.0 
+
                 counter += 1
          
                 # Always check that we haven't exhausted the elements in the clean_prices list
@@ -221,12 +232,21 @@ def scrape_abugames(source=None, page_num=None, remote=True):
 
             if price == 'HP': 
                 counter += 1
-                all_prices[i_row, 6] = float(clean_prices[counter])
-                counter += 1
-                all_prices[i_row, 7] = float(clean_prices[counter])
-                counter += 1
-                all_prices[i_row, 8] = float(clean_prices[counter])
-                counter += 1
+                try:
+                    all_prices[i_row, 6] = float(clean_prices[counter])
+                    counter += 1
+                    all_prices[i_row, 7] = float(clean_prices[counter])
+                    counter += 1
+                    all_prices[i_row, 8] = float(clean_prices[counter])
+                    counter += 1
+
+                except:
+                    all_prices[i_row, 6] = 0
+                    counter += 1
+                    all_prices[i_row, 7] = 0
+                    counter += 1
+                    all_prices[i_row, 8] = 0
+                    counter += 1
             
                 if counter < n_elements:
                     price = clean_prices[counter]
@@ -361,25 +381,27 @@ def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=Non
 
             data.to_csv(out_file, index=False)
 
+            '''
             if i == i_page:
                 full_data = data.copy()
-                #print(i)
             else:
                 full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
-                #print('*', i)
+            '''
 
     # Once we have ended looping on remote URLs we can close / quit everything 
     if remote:
         driver.close()
         driver.quit()
-
+    
+    '''
     # Print to a single dataframe
     else:
+
         str_num = str(i_page) + '-' + str(n_pages)
         out_file = 'output/abugames_all_data_' + str_num + '.csv'
         print(f'Printing full data to {out_file}')
         full_data.to_csv(out_file, index=False)
-
+    '''
     
 def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=False):
     """ Loop over all cardmarket page and extract data """
@@ -410,7 +432,7 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
             if source != None and driver != None:
 
                 counter_str = serie + '.' + str(counter)
-                n_pages = scrape_cardmarket(source=source, page_num=counter_str, remote=remote, cm_type=cm_type)
+                n_pages = scrape_cardmarket(source=source, series=serie, page_num=counter_str, remote=remote, cm_type=cm_type)
                 print(f'Expansion {serie} has n_pages: {n_pages}')
                 time.sleep(10)
                 driver.close()
@@ -428,7 +450,7 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
                         print(f'Reading from {url}')
                         source, driver = get_page_source(url=url, show_browser=show_browser)
                         counter_str = serie + '.' + str(counter)
-                        n_pages = scrape_cardmarket(source=source, page_num=counter_str, remote=remote, cm_type=cm_type)
+                        n_pages = scrape_cardmarket(source=source, serie=series, page_num=counter_str, remote=remote, cm_type=cm_type)
                         time.sleep(10)
                         driver.close()
             
@@ -438,34 +460,47 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
 
         full_data = pd.DataFrame()
         source = None
+        n_pages = 2000
 
-        # This is a loop on the local html files that extracted the information from the website
-        for i in range(1, n_pages+1):
+        for serie in series_ids:
+
+            # This is a loop on the local html files that extracted the information from the website
+            for i in range(1, n_pages+1):
+        
+                # Name of the csv output
+                out_file = 'output/cardmarket_data_pag.' + str(serie) + '.' + str(i) + '.csv'
+                url_file = local_url + str(serie) + '.' + str(i) + '.html'
+
+                # check out that this file exists
+                if os.path.isfile(url_file):
+                    #source, driver = get_page_source(url=url_file, show_browser=show_browser)
+                    data = scrape_cardmarket(source=source, page_num=i, series=serie, remote=remote, cm_type=cm_type) 
+            
+                    # Sanity check
+
+                    if verbose:
+                       print(data.head(10))
     
-            # Name of the csv output
-            out_file = 'output/cardmarket_data_pag.' + str(i) + '.csv'
-            data = scrape_cardmarket(source=source, page_num=i, remote=remote, cm_type=cm_type)
-    
-            # Sanity check
-            print(f'Saving dataframe to {out_file}. File header:')
+                    if data != None:
+                        print(f'Saving dataframe to {out_file}. File header:')
+                        data.to_csv(out_file, index=False)
+                    
+                    '''
+                    # Concatenate all the DataFrames into a single df
+                    if i == 1:
+                        full_data = data.copy()
+                    else:
+                        full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
 
-            if verbose:
-               print(data.head(10))
+                    # Print to a single dataframe
+                    str_num = str(i_page) + '-' + str(n_pages)
+                    out_file = 'output/cardmarket_all_data_' + str_num + '.csv'
 
-            data.to_csv(out_file, index=False)
+                    print(f'Printing full data to {out_file}')
+                    full_data.to_csv(out_file, index=False)
+                    '''
+#def merge_all_abugames():
 
-            # Concatenate all the DataFrames into a single df
-            if i == 1:
-                full_data = data.copy()
-            else:
-                full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
-
-        # Print to a single dataframe
-        str_num = str(i_page) + '-' + str(n_pages)
-        out_file = 'output/cardmarket_all_data_' + str_num + '.csv'
-
-        print(f'Printing full data to {out_file}')
-        full_data.to_csv(out_file, index=False)
 
 
 if __name__ == '__main__':
@@ -475,11 +510,11 @@ if __name__ == '__main__':
     show_browser = False
 
     # Should we use remote URL (on the internet) or local data previously downloaded
-    remote = True
+    remote = False
 
     # Set the inital page to the final page that we want to analyze
-    i_page = 0
-    n_pages = 6000
+    i_page = 5082
+    n_pages = 5122
 
     #scrape_all_abugames(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
     scrape_all_cardmarket(remote=remote, show_browser=show_browser, verbose=False)
