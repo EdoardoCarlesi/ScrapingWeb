@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import tkinter as tk
 import read_series as rs
 import requests
 import time
@@ -76,6 +77,7 @@ def return_series():
          
             if len(number) > 0:
                 nstr = ''.join(number)
+                #print(nstr)
                 all_nums.append(int(nstr))
 
             number = []
@@ -142,7 +144,9 @@ def scrape_cardmarket(source=None, page_num=None, series=None, remote=True, cm_t
         soup = BeautifulSoup(open(tmp_out, 'r'), 'lxml')
 
         # Once we have the page let's find all the card names
-        scrape_title = [i.text.replace('\n', '').replace('  ', '') for i in soup.find_all("div", {"class":"col-12 col-md-8 px-2 flex-column"})]
+        scrape_title = [i.text.replace('\n', '').replace('  ', '')
+                #for i in soup.find_all("div", {"class":"col-10 col-md-8 px-2 flex-column align-items-start justify-content-center"})]
+                for i in soup.find_all("div", {"class":""})]    #FIXME
 
         if len(scrape_title) > 0:
 
@@ -154,7 +158,6 @@ def scrape_cardmarket(source=None, page_num=None, series=None, remote=True, cm_t
             n_titles = len(scrape_title)
             clean_prices = np.zeros((n_titles, 5), dtype=float)
 
-            '''
             # Scrape the Number columm
             scrape_number = [i.text.replace('\n', '').replace('  ', '')
                     for i in soup.find_all("div", {"class":"col-md-2 d-none d-lg-flex has-content-centered"})]
@@ -166,7 +169,6 @@ def scrape_cardmarket(source=None, page_num=None, series=None, remote=True, cm_t
                 clean_prices[:, 0] = np.array(scrape_number)
             except ValueError:
                 pass
-            '''
 
             # Scrape the Available column
             scrape_available = [i.text.replace('\n', '').replace('  ', '')
@@ -185,7 +187,6 @@ def scrape_cardmarket(source=None, page_num=None, series=None, remote=True, cm_t
             clean_prices[:, 2] = np.array(scrape_from)
             clean_prices[:, 2] /= 100.0
 
-            '''
             # Scrape the avail foil
             scrape_avail_foil = [i.text.replace('\n', '').replace('  ', '').replace(',', '').replace(' ', '').replace('€', '')
                     for i in soup.find_all("div", {"class":"col-availability d-none d-lg-flex"})]
@@ -201,7 +202,6 @@ def scrape_cardmarket(source=None, page_num=None, series=None, remote=True, cm_t
             columns.append(scrape_from_foil[0])
             scrape_from_foil.remove(scrape_from_foil[0])
             clean_prices[:, 4] = np.array(scrape_from_foil)
-            '''
 
             data = pd.DataFrame(columns = columns)
             data[columns[0]] = scrape_title
@@ -511,16 +511,15 @@ def scrape_all_cardmarket(exp_code=None, remote=None, show_browser=None, cm_type
     local_url = output_folder + 'cardmarket_price_order.'
 
     counter = 0
-    series_ids = return_series()
+    series_ids = rs.return_series()
 
     if exp_code == None:
         ind_serie = 0
     else:
-        print('exp_code: ', exp_code)
         ind = 0
         for i, serie in enumerate(series_ids):
             if int(serie) == int(exp_code):
-                ind_serie = i
+                ind = i
 
     if remote:
 
@@ -528,7 +527,6 @@ def scrape_all_cardmarket(exp_code=None, remote=None, show_browser=None, cm_type
         for serie in series_ids[ind_serie:]:
             # First get the number of pages for this expansion
             serie = str(serie)
-
             url = url_base_type + serie + suffix_url + '1'
             source, driver = get_page_source(url=url, show_browser=show_browser)
 
@@ -562,15 +560,13 @@ def scrape_all_cardmarket(exp_code=None, remote=None, show_browser=None, cm_type
             
     # If not grabbing data from remote we will dump it all to csv files, which can be merged into a single dataframe
     else:
-        msg = 'MTG Web scraper running on local files.'
-        print(msg) 
-        logging.info(msg)
+        print('MTG Web scraper running on local files.')
 
         full_data = pd.DataFrame()
         source = None
         n_pages = 2000
 
-        for serie in series_ids[ind_serie:]:
+        for serie in series_ids:
 
             # This is a loop on the local html files that extracted the information from the website
             for i in range(1, n_pages+1):
@@ -585,44 +581,38 @@ def scrape_all_cardmarket(exp_code=None, remote=None, show_browser=None, cm_type
                     data = scrape_cardmarket(source=source, page_num=i, series=serie, remote=remote, cm_type=cm_type) 
             
                     # Sanity check
-                    try:
-                        n_data = len(data)
-                    except:
-                        n_data = 0
 
-                    if n_data > 0:
-                        msg='Saving dataframe to ' + out_file
-                        logging.info(msg)
-                        print(msg)
+                    if verbose:
+                       print(data.head(10))
+    
+                    if data != None:
+                        print(f'Saving dataframe to {out_file}. File header:')
                         data.to_csv(out_file, index=False)
-
+                    
 
 def merge_all_abugames(i_ini=1, i_end=5122, f_out=output_folder+'abugames_completo.csv'):
     """ Dump all the files to the same CSV """
 
-    file_root=output_folder+'abugames_data_pag.'
+    file_root=output_folder+'abugames_'
     this_abugames = file_root + '1.csv'
     full_data = pd.read_csv(this_abugames)
 
-    # The first file has already been read in, skip it
     for i in range(i_ini+1, i_end):
         this_abugames = file_root + str(i) + '.csv'
         data = pd.read_csv(this_abugames)
         full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
 
-    msg = 'Merging all files to ' + f_out
-    logging.info(msg)
-    print(msg)
+    print('Merging all files to {f_out}')
     full_data.to_csv(f_out)
 
 
-def merge_all_cardmarket(i_ini=1, i_end=200, f_out=output_folder+'cardmarket_completo.csv'):
+def merge_all_cardmarket(i_ini=1, i_max=200, f_out=output_folder+'cardmarket_completo.csv'):
     """ Dump all the files to the same CSV """
 
-    file_root=output_folder+'cardmarket_data_pag.'
+    file_root=output_folder+'cardmarket_'
     this_cardmarket = file_root + '1.1.csv'
     full_data = pd.read_csv(this_cardmarket)
-    series_ids = return_series()
+    series_ids = rs.return_series()
 
     # Loop on the expansions
     for serie in series_ids:
@@ -636,9 +626,7 @@ def merge_all_cardmarket(i_ini=1, i_end=200, f_out=output_folder+'cardmarket_com
                 data = pd.read_csv(this_cardmarket)
                 full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
 
-    msg = 'Merging all files to ' + f_out
-    print(msg)
-    logging.info(msg)
+    print('Merging all files to {f_out}')
     full_data.to_csv(f_out)
 
 
@@ -647,6 +635,20 @@ if __name__ == '__main__':
     """ Main wrapper """
      
     settings = read_settings()
+
+    '''
+    root= tk.Tk()
+    canvas1 = tk.Canvas(root, width = 300, height = 300)
+    canvas1.pack()
+
+    def hello ():  
+        label1 = tk.Label(root, text= 'Hello World!', fg='green', font=('helvetica', 12, 'bold'))
+        canvas1.create_window(150, 200, window=label1)
+        
+    button1 = tk.Button(text='Click Me',command=hello, bg='brown',fg='white')
+    canvas1.create_window(150, 150, window=button1)
+    root.mainloop()
+    '''
 
     # Should we open the browser and show it or run it in the background
     show_browser = False
@@ -668,7 +670,6 @@ if __name__ == '__main__':
     print(msg)
 
     if settings['site'].values == 'abugames':
-
         # Set the inital page to the final page that we want to analyze
         i_page = int(settings['init_page'].values)
         end_page = int(settings['end_page'].values)
@@ -680,7 +681,7 @@ if __name__ == '__main__':
 
         if settings['scrape_type'].values == 'offline':
             msg = 'Merging all abugames files into one'
-            merge_all_abugames(i_end=end_page, f_out=output_folder+'abugames_completo.csv')
+            merge_all_abugames(i_ini=i_page, i_end=end_page, f_out=output_folder+'abugames_completo.csv')
             print(msg)
             logging.info(msg)
 
@@ -690,12 +691,12 @@ if __name__ == '__main__':
         print(msg)
         logging.info(msg)
 
-        scrape_all_cardmarket(remote=remote, show_browser=show_browser, verbose=False, exp_code=exp_code)
+        scrape_all_cardmarket(remote=remote, show_browser=show_browser, verbose=False)
 
         if settings['scrape_type'].values == 'offline':
             msg = 'Merging all abugames files into one'
+            merge_all_abugames(i_ini=i_page, i_end=end_page, f_out=output_folder+'abugames_completo.csv')
             print(msg)
-            merge_all_cardmarket(f_out=output_folder+'cardmarket_completo.csv')
             logging.info(msg)
 
     else:
