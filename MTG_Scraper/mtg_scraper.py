@@ -679,6 +679,12 @@ if __name__ == '__main__':
 
         scrape_all_abugames(i_page=i_page, n_pages=end_page, remote=remote, show_browser=show_browser, verbose=False)
 
+        if settings['scrape_type'].values == 'offline':
+            msg = 'Merging all abugames files into one'
+            merge_all_abugames(i_ini=i_page, i_end=end_page, f_out=output_folder+'abugames_completo.csv')
+            print(msg)
+            logging.info(msg)
+
     elif settings['site'].values == 'cardmarket':
         exp_code = int(settings['expansion_code'].values)
         msg = 'Running for cardmarket from page %d' % (exp_code)
@@ -686,6 +692,12 @@ if __name__ == '__main__':
         logging.info(msg)
 
         scrape_all_cardmarket(remote=remote, show_browser=show_browser, verbose=False)
+
+        if settings['scrape_type'].values == 'offline':
+            msg = 'Merging all abugames files into one'
+            merge_all_abugames(i_ini=i_page, i_end=end_page, f_out=output_folder+'abugames_completo.csv')
+            print(msg)
+            logging.info(msg)
 
     else:
         msg = 'Could not find correct setting type for site type'
