@@ -1,0 +1,19 @@
+INFORMAZIONI PER L'ESECUZIONE
+
+Editare il file settings.csv:
+	- system_type = LINUX, WINDOWS
+	- site = il sito da cui scaricare, abugames o cardmarket
+	- scrape_type = remote, offline
+	- init_page, end_page = per ABUGAMES pagine iniziali e finali da scaricare o analizzare
+	- expansion_code = per CARDMARKET, il codice (interno) relativo ad ogni espansione da cui partire a scaricare
+
+COME ESEGUIRE IL PROGRAMMA:
+
+- Editare il .csv facendo attenzione a non lasciare spazi tra le parole / numeri nel file csv
+
+- Creare una cartella output nella stessa cartella dove viene eseguito il programma.
+
+- Eseguire il programma per la prima volta in versione remote per scaricare tutti i file .html in una cartella locale (output)
+Una volta scaricati gli .html nel folder output, ri-eseguire il programma cambiando nel file settings.csv da remote a offline
+
+

@@ -1,21 +1,108 @@
 import numpy as np
 import pandas as pd
+import tkinter as tk
+import read_series as rs
 import requests
 import time
 import re
 import os
-import read_series as rs
+import logging
 from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
 
+# Logging settings
+log_filename = 'logfile.log'
+logging.basicConfig(filename=log_filename,level=logging.INFO) 
+logging.info('Logfile for MTG Scraper...\n')
+
+global system_type
+global output_folder 
+global run_mode 
+global settings
+
+system_type = 'LINUX'
+output_folder = 'output/'
+run_mode = 'remote'
+
+
+def read_settings():
+    """ Read the program settings from the .csv file """
+
+    settings_file = 'settings.csv'
+
+    try:
+        settings = pd.read_csv(settings_file)
+    except:
+        logging.info('File not found: ' + settings_file)
+        exit()
+
+    if settings['system_type'].values == 'LINUX':
+        logging.info('Using LINUX default settings.')
+
+    elif settings['system_type'].values == 'WINDOWS':
+        logging.info('Using WINDOWS settings.')
+        output_folder = 'output\\'
+
+    else:
+        logging.info('Error in the settings.csv file for the system_type option.')
+        exit()
+
+    return settings
+
+
+def return_series():
+    """ Read the series codes from a .txt file """
+
+    years = [ 1990 + i for i in range(0, 34)]
+
+    series_file='series_names_ids.txt'
+
+    try:
+        tags_file = open(series_file, 'r')
+    except:
+        logging.info('Expansion tag files not found: ' + series_file)
+
+    all_nums = []
+    number = []
+    nstr = ''
+
+    while (nstr != '3500'):
+          
+        # read by character
+        char = tags_file.read(1)          
+        if char == '"':
+         
+            if len(number) > 0:
+                nstr = ''.join(number)
+                #print(nstr)
+                all_nums.append(int(nstr))
+
+            number = []
+
+        if char.isdigit():
+            number.append(char)
+    
+    all_nums = set(all_nums)
+
+    for yr in years:
+        if (yr in all_nums):
+            all_nums.remove(yr)
+
+    all_nums = list(all_nums)
+    all_nums.sort()
+
+    return all_nums
+
+
+
 def scrape_cardmarket(source=None, page_num=None, series=None, remote=True, cm_type=None): 
     """ Given a page source (ABUgames format!) we extract the card names and all the possible prices """
 
     # Basic paths and urls
-    base_path = 'output/cardmarket_' + cm_type + '.' 
+    base_path = output_folder + 'cardmarket_' + cm_type + '.' 
     tmp_out = base_path + str(series) + '.' + str(page_num) + '.html'
 
     # If reading a remote online page
@@ -40,12 +127,15 @@ def scrape_cardmarket(source=None, page_num=None, series=None, remote=True, cm_t
             pn = re.search(' of \d', str(page_num)).group()[4:]
             return int(pn)
         except:
-            print('Problem extracting page number, setting to default = 1')
+            msg='Problem extracting page number, setting to default = 1'
+            logging.info(msg)
+            print(msg)
             return 1
 
     # Read the output from a local source
     else:
-        print(f'Extracting from local file: {tmp_out}')
+        msg='Extracting from local file: ' + tmp_out
+        print(msg)
 
         # Columns for the dataframe
         columns = []
@@ -56,7 +146,7 @@ def scrape_cardmarket(source=None, page_num=None, series=None, remote=True, cm_t
         # Once we have the page let's find all the card names
         scrape_title = [i.text.replace('\n', '').replace('  ', '')
                 #for i in soup.find_all("div", {"class":"col-10 col-md-8 px-2 flex-column align-items-start justify-content-center"})]
-                for i in soup.find_all("div", {"class":""})]
+                for i in soup.find_all("div", {"class":""})]    #FIXME
 
         if len(scrape_title) > 0:
 
@@ -129,7 +219,7 @@ def scrape_abugames(source=None, page_num=None, remote=True):
     """ Given a page source (ABUgames format!) we extract the card names and all the possible prices """
 
     # Basic paths and urls
-    base_path = 'output/abugames.'
+    base_path = output_folder + 'abugames.'
     tmp_out = base_path + str(page_num) + '.html'
 
     # If reading a remote online page
@@ -141,7 +231,9 @@ def scrape_abugames(source=None, page_num=None, remote=True):
         # We do some cleaning as well as a local html copy
         html = soup.prettify()  
 
-        print(f'Exporting to {tmp_out}')
+        msg = 'Exporting to ' + tmp_out
+        logging.info(msg)
+        print(msg)
 
         # Dump the clean version to a temporary output
         with open(tmp_out,"w") as out:
@@ -153,7 +245,9 @@ def scrape_abugames(source=None, page_num=None, remote=True):
 
     # Read the output from a local source
     else:
-        print(f'Extracting from local file: {tmp_out}')
+        msg='Extracting from local file: ' + tmp_out
+        logging.info(msg)
+        print(msg)
 
         # Now read the cleaned up version of the file
         soup = BeautifulSoup(open(tmp_out, 'r'), 'lxml')
@@ -198,7 +292,6 @@ def scrape_abugames(source=None, page_num=None, remote=True):
             if price == 'MINT':
                 counter += 4
                 price = clean_prices[counter]
-                print(price)
 
             if price == 'NM': 
                 counter += 1
@@ -262,7 +355,9 @@ def scrape_abugames(source=None, page_num=None, remote=True):
                 df[col] = all_prices[:,i]
 
         except ValueError:
-            print(f'Error on page {page_num}, data table has likely an irregular format.')
+            msg = 'Error on page %d, data table has likely an irregular format.' % page_num
+            logging.info(msg)
+            print(msg) 
 
         return df
 
@@ -287,6 +382,8 @@ def get_page_source(url=None, show_browser=False, time_sleep=10, driver=None):
             driver.get(url)
          
             # Wait for the page to load correctly
+            msg='Waiting for the page to load correctly...'
+            logging.info(msg)
             print('Waiting for the page to load correctly...')
             time.sleep(time_sleep)
 
@@ -294,7 +391,9 @@ def get_page_source(url=None, show_browser=False, time_sleep=10, driver=None):
             source = driver.page_source
        
         except:
-            print(f'Url {url} could not be reached')
+            msg = 'Url %s could not be reached' % url
+            logging.info(msg)
+            print(msg) 
             source = None
             driver = None
 
@@ -308,7 +407,7 @@ def extract_cardmarket_weekly():
     req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     webpage = urlopen(req).read()
     webs = pd.read_html(webpage)
-    webs[0].to_csv('output/cardmarket.csv')
+    webs[0].to_csv(output_folder + 'cardmarket.csv')
 
     return webs[0]
     
@@ -328,7 +427,9 @@ def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=Non
         source, driver = get_page_source(url=url, show_browser=show_browser) 
         time.sleep(10)
 
-        print(f'Skipping to page {count_page}')
+        msg = 'Skipping to page %d' % count_page
+        logging.info(msg)
+        print(msg) 
 
         # Loop and move forward (click) until we reach the desired starting page
         while (count_page + skip < i_page):
@@ -338,7 +439,9 @@ def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=Non
             # We skip some pages to clikc to speedup
             count_page += skip
 
-            print(f'Skipping to page {count_page}')
+            msg = 'Skipping to page %d' % count_page 
+            logging.info(msg)
+            print(msg) 
 
             # Wait some time but not too much, this one is pretty fast
             time.sleep(0.5)
@@ -349,12 +452,14 @@ def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=Non
         full_data = pd.DataFrame()
 
         # Just set the source to None, we will reload it with beautiful soup
-        print('MTG Web scraper running on local files.')
+        msg = 'MTG Web scraper running on local files.'
+        logging.info(msg)
+        print(msg)
         source = None
 
     for i in range(i_page, n_pages+1):
 
-        out_file = 'output/abugames_data_pag.' + str(i) + '.csv'
+        out_file = output_folder + 'abugames_data_pag.' + str(i) + '.csv'
         data = scrape_abugames(source=source, page_num=i, remote=remote) 
 
         # We need to click on the next page, that is, i+1
@@ -363,7 +468,9 @@ def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=Non
 
         # Click on the page only if we did not 
         if remote:
-            print(f'Page {i} saved to file {out_file}, going to page number: {i}')
+            msg = 'Page %d saved to file %d, going to page number: %d' % (i, out_file, i)
+            logging.info(msg)
+            print(msg)
 
             # This is clicking on NEXT simply...
             driver.find_element_by_xpath(xpath_str_next).click() 
@@ -374,36 +481,23 @@ def scrape_all_abugames(i_page=None, n_pages=None, remote=None, show_browser=Non
             # Get the new page source
             source = driver.page_source
         else:
-            print(f'Saving dataframe to {out_file}. File header:')
+            msg = 'Saving dataframe to %s. File header:' % out_file
+            logging.info(msg)
+            logging.info(data.head())
+            print(msg)
 
             if verbose:
                 print(data.head(10))
 
             data.to_csv(out_file, index=False)
 
-            '''
-            if i == i_page:
-                full_data = data.copy()
-            else:
-                full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
-            '''
-
     # Once we have ended looping on remote URLs we can close / quit everything 
     if remote:
         driver.close()
         driver.quit()
     
-    '''
-    # Print to a single dataframe
-    else:
-
-        str_num = str(i_page) + '-' + str(n_pages)
-        out_file = 'output/abugames_all_data_' + str_num + '.csv'
-        print(f'Printing full data to {out_file}')
-        full_data.to_csv(out_file, index=False)
-    '''
     
-def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=False):
+def scrape_all_cardmarket(exp_code=None, remote=None, show_browser=None, cm_type=None, verbose=False):
     """ Loop over all cardmarket page and extract data """
 
     # Main cardmarket url
@@ -413,17 +507,24 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
     url_base = 'https://www.cardmarket.com/en/Magic/Products/Singles?idCategory=1&idExpansion=0&idRarity=0&sortBy=price_desc&site='; cm_type='price_order'
     url_base_type = 'https://www.cardmarket.com/en/Magic/Products/Search?idCategory=0&idExpansion='; suffix_url='&idRarity=0&sortBy=price_desc&site='
     #https://www.cardmarket.com/en/Magic/Products/Search?idCategory=0&idExpansion=1269&idRarity=0&sortBy=price_desc&perSite=100
-    #'https://www.cardmarket.com/en/Magic/Products/Search?idCategory=0&idExpansion=51&idRarity=0&sortBy=price_desc&site=2'
-    local_url = 'output/cardmarket_price_order.' #1513.1.html'
+    #https://www.cardmarket.com/en/Magic/Products/Search?idCategory=0&idExpansion=51&idRarity=0&sortBy=price_desc&site=2
+    local_url = output_folder + 'cardmarket_price_order.'
 
     counter = 0
     series_ids = rs.return_series()
 
+    if exp_code == None:
+        ind_serie = 0
+    else:
+        ind = 0
+        for i, serie in enumerate(series_ids):
+            if int(serie) == int(exp_code):
+                ind = i
+
     if remote:
 
         # Get the total number of expansions
-        for serie in series_ids:
-            print(serie)
+        for serie in series_ids[ind_serie:]:
             # First get the number of pages for this expansion
             serie = str(serie)
             url = url_base_type + serie + suffix_url + '1'
@@ -433,7 +534,9 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
 
                 counter_str = serie + '.' + str(counter)
                 n_pages = scrape_cardmarket(source=source, series=serie, page_num=counter_str, remote=remote, cm_type=cm_type)
-                print(f'Expansion {serie} has n_pages: {n_pages}')
+                msg = 'Expansion %s has n_pages: %d pages' % (series, n_pages)
+                logging.info(msg)
+                print(msg)
                 time.sleep(10)
                 driver.close()
 
@@ -444,10 +547,11 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
                     check_url = local_url + str(serie) + '.' + str(counter) + '.html'
                     
                     if os.path.isfile(check_url):
+                        msg = 'Url exists locally: ' % (url, check_url)
                         print(f'Url {url} exists locally: {check_url}')
                     else:
 
-                        print(f'Reading from {url}')
+                        msg = 'Reading from %s' % url
                         source, driver = get_page_source(url=url, show_browser=show_browser)
                         counter_str = serie + '.' + str(counter)
                         n_pages = scrape_cardmarket(source=source, series=serie, page_num=counter_str, remote=remote, cm_type=cm_type)
@@ -468,7 +572,7 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
             for i in range(1, n_pages+1):
         
                 # Name of the csv output
-                out_file = 'output/cardmarket_data_pag.' + str(serie) + '.' + str(i) + '.csv'
+                out_file = output_folder + 'cardmarket_data_pag.' + str(serie) + '.' + str(i) + '.csv'
                 url_file = local_url + str(serie) + '.' + str(i) + '.html'
 
                 # check out that this file exists
@@ -485,25 +589,11 @@ def scrape_all_cardmarket(remote=None, show_browser=None, cm_type=None, verbose=
                         print(f'Saving dataframe to {out_file}. File header:')
                         data.to_csv(out_file, index=False)
                     
-                    '''
-                    # Concatenate all the DataFrames into a single df
-                    if i == 1:
-                        full_data = data.copy()
-                    else:
-                        full_data = pd.concat((full_data, data), axis=0, ignore_index=True)
 
-                    # Print to a single dataframe
-                    str_num = str(i_page) + '-' + str(n_pages)
-                    out_file = 'output/cardmarket_all_data_' + str_num + '.csv'
-
-                    print(f'Printing full data to {out_file}')
-                    full_data.to_csv(out_file, index=False)
-                    '''
-
-def merge_all_abugames(i_ini=1, i_end=5122, f_out='output/abugames_completo.csv'):
+def merge_all_abugames(i_ini=1, i_end=5122, f_out=output_folder+'abugames_completo.csv'):
     """ Dump all the files to the same CSV """
 
-    file_root='output/abugames_'
+    file_root=output_folder+'abugames_'
     this_abugames = file_root + '1.csv'
     full_data = pd.read_csv(this_abugames)
 
@@ -516,10 +606,10 @@ def merge_all_abugames(i_ini=1, i_end=5122, f_out='output/abugames_completo.csv'
     full_data.to_csv(f_out)
 
 
-def merge_all_cardmarket(i_ini=1, i_max=200, f_out='output/cardmarket_completo.csv'):
+def merge_all_cardmarket(i_ini=1, i_max=200, f_out=output_folder+'cardmarket_completo.csv'):
     """ Dump all the files to the same CSV """
 
-    file_root='output/cardmarket_'
+    file_root=output_folder+'cardmarket_'
     this_cardmarket = file_root + '1.1.csv'
     full_data = pd.read_csv(this_cardmarket)
     series_ids = rs.return_series()
@@ -543,19 +633,66 @@ def merge_all_cardmarket(i_ini=1, i_max=200, f_out='output/cardmarket_completo.c
 
 if __name__ == '__main__':
     """ Main wrapper """
-    
+     
+    settings = read_settings()
+
+    '''
+    root= tk.Tk()
+    canvas1 = tk.Canvas(root, width = 300, height = 300)
+    canvas1.pack()
+
+    def hello ():  
+        label1 = tk.Label(root, text= 'Hello World!', fg='green', font=('helvetica', 12, 'bold'))
+        canvas1.create_window(150, 200, window=label1)
+        
+    button1 = tk.Button(text='Click Me',command=hello, bg='brown',fg='white')
+    canvas1.create_window(150, 150, window=button1)
+    root.mainloop()
+    '''
+
     # Should we open the browser and show it or run it in the background
     show_browser = False
 
     # Should we use remote URL (on the internet) or local data previously downloaded
-    remote = True
+    if settings['scrape_type'].values == 'remote':
+        msg = 'Running in online mode'
+        remote = True
 
-    # Set the inital page to the final page that we want to analyze
-    i_page = 5082
-    n_pages = 5122
+    elif settings['scrape_type'].values == 'offline':
+        msg = 'Running offline in local mode'
+        remote = False
 
-    #scrape_all_abugames(i_page=i_page, n_pages=n_pages, remote=remote, show_browser=show_browser, verbose=False)
-    scrape_all_cardmarket(remote=remote, show_browser=show_browser, verbose=False)
+    else:
+        msg = 'Error. Could not find correct setting type for scrape_type'
+        exit()
+
+    logging.info(msg)
+    print(msg)
+
+    if settings['site'].values == 'abugames':
+        # Set the inital page to the final page that we want to analyze
+        i_page = int(settings['init_page'].values)
+        end_page = int(settings['end_page'].values)
+        msg = 'Running for abugames from page %d to %d' % (i_page, end_page)
+        print(msg)
+        logging.info(msg)
+
+        scrape_all_abugames(i_page=i_page, n_pages=end_page, remote=remote, show_browser=show_browser, verbose=False)
+
+    elif settings['site'].values == 'cardmarket':
+        exp_code = int(settings['expansion_code'].values)
+        msg = 'Running for cardmarket from page %d' % (exp_code)
+        print(msg)
+        logging.info(msg)
+
+        scrape_all_cardmarket(remote=remote, show_browser=show_browser, verbose=False)
+
+    else:
+        msg = 'Could not find correct setting type for site type'
+        print(msg)
+        logging.info(msg)
+        exit()
+
 
     
 
